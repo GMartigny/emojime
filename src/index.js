@@ -48,20 +48,18 @@ const tinyFaceOptions = new TinyFaceDetectorOptions({
     scoreThreshold: 0.1, // Lower score reduce emoji disappearance
 });
 // Run the face detection on a source element
-const recognise = async source => await new DetectAllFacesTask(source, tinyFaceOptions)
+const recognise = async source => new DetectAllFacesTask(source, tinyFaceOptions)
     .withFaceLandmarks(useTinyModel)
     .withFaceExpressions(useTinyModel);
 
 // Search all expression score for the bigger one
-const getBest = (scores) => {
-    return Object.keys(scores).reduce((acc, val) => {
-        if (!acc || scores[val] > scores[acc]) {
-            return val;
-        }
+const getBest = scores => Object.keys(scores).reduce((acc, val) => {
+    if (!acc || scores[val] > scores[acc]) {
+        return val;
+    }
 
-        return acc;
-    });
-};
+    return acc;
+});
 
 // Start function
 const run = async () => {

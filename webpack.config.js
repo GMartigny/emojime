@@ -18,15 +18,15 @@ module.exports = {
         new CopyPlugin([
             {
                 from: "./src/models",
-                to: "./models"
-            }
+                to: "./models",
+            },
         ]),
         new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
-            title: "Facemoji",
+            title: "Emojime",
         }),
     ],
     node: {
         fs: "empty",
-    }
+    },
 };
