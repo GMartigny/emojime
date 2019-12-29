@@ -1,8 +1,12 @@
+const { resolve } = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+    output: {
+        path: resolve(__dirname, "public"),
+    },
     module: {
         rules: [
             {
