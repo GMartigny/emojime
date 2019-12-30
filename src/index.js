@@ -2,6 +2,7 @@ import { TinyFaceDetectorOptions, nets, DetectAllFacesTask, resizeResults } from
 import Scene from "@pencil.js/scene";
 import Position from "@pencil.js/position";
 import Text from "@pencil.js/text";
+import Arc from "@pencil.js/arc";
 import "github-corner";
 import "./style.css";
 
@@ -55,6 +56,9 @@ const getBest = scores => Object.keys(scores).reduce((acc, val) => {
 
 // Start function
 const run = async () => {
+    let modelReady = false;
+    loadModels().then(() => modelReady = true);
+
     const size = {
         width: 960,
         height: 720,
@@ -84,7 +88,15 @@ const run = async () => {
     // Overlay canvas to draw the emoji
     const overlay = new Scene(container);
 
-    await loadModels();
+    // Loader while model are fetched
+    const loader = new Arc(overlay.center, 100, 100, 0, 0.5, {
+        stroke: "#ff0e3f",
+        strokeWidth: 20,
+        shadow: {
+            color: "#333",
+            blur: 10,
+        },
+    });
 
     // All possible faces
     const faces = {
@@ -105,6 +117,15 @@ const run = async () => {
 
     // Run detection on each frames
     const eachFrame = async () => {
+        if (modelReady) {
+            loader.hide();
+        }
+        else {
+            loader.options.rotation += 0.01;
+            loader.endAngle += Math.cos(loader.frameCount / 50) / 105;
+            return;
+        }
+
         const results = await recognise(video);
         emojis.forEach(emoji => emoji.hide());
 
@@ -141,6 +162,7 @@ const run = async () => {
 
     // Start the scene loop and register the function on each frame
     overlay
+        .add(loader)
         .startLoop()
         .on(Scene.events.draw, eachFrame, true);
 };
