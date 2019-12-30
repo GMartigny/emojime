@@ -2,6 +2,7 @@ import { TinyFaceDetectorOptions, nets, DetectAllFacesTask, resizeResults } from
 import Scene from "@pencil.js/scene";
 import Position from "@pencil.js/position";
 import Text from "@pencil.js/text";
+import "github-corner";
 import "./style.css";
 
 // Load every model we need
@@ -59,7 +60,11 @@ const run = async () => {
         height: 720,
     };
 
-    document.body.innerHTML = `<h1>Emojime</h1>
+    document.body.innerHTML = `
+<github-corner fill="#333">
+    <a href="https://github.com/GMartigny/emojime"></a>
+</github-corner>
+<h1>Emojime</h1>
 <main style="width: ${size.width}px;height: ${size.height}px" id="container">
     <p>Enable your camera</p>
 </main>`;
