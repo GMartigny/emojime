@@ -24,23 +24,14 @@ const startVideo = async (container) => {
     video.setAttribute("autoplay", true);
     video.setAttribute("muted", true);
 
+    // Ask user for permission
+    video.srcObject = await navigator.mediaDevices.getUserMedia({
+        video: true,
+    });
+
     container.appendChild(video);
 
-    try {
-        // Ask user for permission
-        video.srcObject = await navigator.mediaDevices.getUserMedia(
-            {
-                video: true,
-            },
-        );
-
-        return video;
-    }
-    catch (error) {
-        console.error(error.message);
-    }
-
-    return null;
+    return video;
 };
 
 const useTinyModel = true;
@@ -63,29 +54,32 @@ const getBest = scores => Object.keys(scores).reduce((acc, val) => {
 
 // Start function
 const run = async () => {
-    await loadModels();
-
     const size = {
         width: 960,
         height: 720,
     };
 
-    // Title
-    const title = document.createElement("h1");
-    title.textContent = "FaceMoji";
-    document.body.appendChild(title);
+    document.body.innerHTML = `<h1>Emojime</h1>
+<main style="width: ${size.width}px;height: ${size.height}px" id="container">
+    <p>Enable your camera</p>
+</main>`;
 
-    // Container element
-    const container = document.createElement("main");
-    container.style.width = `${size.width}px`;
-    container.style.height = `${size.height}px`;
-    document.body.appendChild(container);
+    const container = document.getElementById("container");
 
     // The video from the webcam
-    const video = await startVideo(container);
+    let video;
+    try {
+        video = await startVideo(container);
+    }
+    catch (e) {
+        // Webcam unsupported or blocked
+        return;
+    }
 
     // Overlay canvas to draw the emoji
     const overlay = new Scene(container);
+
+    await loadModels();
 
     // All possible faces
     const faces = {

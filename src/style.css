@@ -1,10 +1,10 @@
 body {
     margin: 0;
     background: #666;
+    font-family: sans-serif;
 }
 
 h1 {
-    font-family: sans-serif;
     color: #fff;
     text-align: center;
     text-shadow: .25rem .25rem 0 #333;
@@ -13,9 +13,17 @@ h1 {
 
 main {
     position: absolute;
+    display: flex;
+    align-items: center;
     left: 0;
     right: 0;
     margin: 0 auto;
     background: #333;
     box-shadow: 0 0 30px #000;
+}
+
+main p {
+    color: #fff;
+    flex: 1 0 auto;
+    text-align: center;
 }
